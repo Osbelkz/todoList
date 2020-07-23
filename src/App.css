@@ -1,0 +1,49 @@
+.App {
+  padding: 30px;
+  display: flex;
+}
+
+.App > div {
+  margin-right: 50px;
+}
+
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
+}
+
+
+.active-filter {
+  background-color: blue;
+  color: wheat;
+}
+
+.isDone {
+  opacity: .5;
+}
+
+.tasksList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.task-default {
+  display: flex;
+  justify-content: space-between;
+}
+.task-default:hover {
+   background-color: #adb8c0;
+ }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.todolist {
+  width: 420px;
+}
