@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {ToDoList} from "./components/ToDoList";
 import {v1} from "uuid";
+import {AddItemForm} from "./components/AddItemForm/AddItemForm";
 
 export type TaskType = {
     id: string,
@@ -83,8 +84,26 @@ function App() {
     }
 
 
+    function addTodolist(newTodolistTitle: string) {
+        let newTodolistId = v1();
+        setTodoLists([...todoLists, {id: newTodolistId, title: newTodolistTitle, filter: "all"}])
+        setTasks({...tasks, [newTodolistId]: []})
+    }
+
+    function changeTaskTitle(todolistId: string, taskId: string, newTitle: string) {
+        setTasks({
+            ...tasks,
+            [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title: newTitle}: task)
+        })
+    }
+
+    function changeTodolistTitle(todolistId: string, newTodolistTitle: string) {
+        setTodoLists(todoLists.map(tl=>tl.id===todolistId ? {...tl, title: newTodolistTitle}: tl))
+    }
+
     return (
         <div className="App">
+            <AddItemForm addItem={addTodolist}/>
             {todoLists.map(tl => {
                 let tasksForToDoList: Array<TaskType>;
                 switch (tl.filter) {
@@ -98,10 +117,12 @@ function App() {
                         tasksForToDoList = tasks[tl.id];
                         break;
                 }
+
+
                 return (
                     <ToDoList
                         key={tl.id}
-                        id={tl.id}
+                        todolistId={tl.id}
                         title={tl.title}
                         filter={tl.filter}
                         tasks={tasksForToDoList}
@@ -109,13 +130,14 @@ function App() {
                         addTask={addTask}
                         changeFilter={changeFilter}
                         changeStatus={changeStatus}
-                        deleteTodoList={()=>deleteTodoList(tl.id)}
+                        deleteTodoList={() => deleteTodoList(tl.id)}
                         allTasks={tasks[tl.id]}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTodolistTitle={changeTodolistTitle}
                     />)
             })}
-
         </div>
-    );
+    )
 }
 
 export default App;

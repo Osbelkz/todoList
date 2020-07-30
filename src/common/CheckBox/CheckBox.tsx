@@ -5,7 +5,7 @@ type PropsType = {
     onClick: (value: boolean) => void
     disabled?: boolean
     checked: boolean
-    label: string
+    label?: string
 }
 
 export function CheckBox(props: PropsType) {
@@ -16,7 +16,7 @@ export function CheckBox(props: PropsType) {
                    checked={props.checked}
                    onChange={e => props.onClick(e.currentTarget.checked)}
                    disabled={props.disabled}/>
-                   <span className={classes.checkbox__label}>{props.label}</span>
+                   {/*<span className={classes.checkbox__label}>{props.label}</span>*/}
         </label>
     )
 }

@@ -3,9 +3,12 @@ import {FilterValuesType, TaskType} from "../App";
 import {Button} from "../common/Button/Button";
 import {CheckBox} from "../common/CheckBox/CheckBox";
 import {Input} from "../common/Input/Input";
+import {AddItemForm} from "./AddItemForm/AddItemForm";
+import classes from "../common/CheckBox/CheckBox.module.scss";
+import {EditableSpan} from "./EditableSpan/EditableSpan";
 
 type ToDoListProps = {
-    id: string
+    todolistId: string
     title: string
     filter: FilterValuesType
     allTasks: Array<TaskType>
@@ -15,75 +18,70 @@ type ToDoListProps = {
     changeFilter: (newFilterValue: FilterValuesType, todoListId: string) => void
     changeStatus: (taskId: string, isDone: boolean, todoListId: string) => void
     deleteTodoList: () => void
+    changeTaskTitle: (todolistId: string, taskId: string, newTaskTitle: string) => void
+    changeTodolistTitle: (todolistId: string, newTodolistTitle: string)=>void
 }
 
 
 export function ToDoList(props: ToDoListProps) {
 
-    let [newTaskText, setTaskText] = useState('');
-    let [error, setError] = useState<string | null>(null);
 
-    function onTaskNameChanged(value: string): void {
-        setTaskText(value);
-        setError(null);
+    function addTaskHandler(value: string) {
+        props.addTask(value, props.todolistId)
     }
-
-    function addTask(): void {
-        if (newTaskText.trim()) {
-            props.addTask(newTaskText.trim(), props.id);
-            setTaskText('');
-        }
-        setError('Title is required!');
+    function changeTodolistTitle(newTitle: string) {
+        props.changeTodolistTitle(props.todolistId, newTitle)
     }
-
 
     function onAllClickHandler() {
-        props.changeFilter('all', props.id)
+        props.changeFilter('all', props.todolistId)
     }
     function onActiveClickHandler() {
-        props.changeFilter('active', props.id)
+        props.changeFilter('active', props.todolistId)
     }
     function onCompletedClickHandler() {
-        props.changeFilter('completed', props.id)
+        props.changeFilter('completed', props.todolistId)
     }
+
+
 
     const tasks = props.tasks.map(task => {
         function changeCheckBox(value: boolean): void {
-            props.changeStatus(task.id, value, props.id);
+            props.changeStatus(task.id, value, props.todolistId);
         }
 
         function deleteTask(): void {
-            props.deleteTask(task.id, props.id);
+            props.deleteTask(task.id, props.todolistId);
+        }
+
+        function changeTaskTitle(newTaskTitle: string) {
+            props.changeTaskTitle(props.todolistId, task.id, newTaskTitle)
         }
 
         return (
             <li key={task.id} className={task.isDone ? 'task-default isDone' : 'task-default'}>
-                <CheckBox label={task.title}
-                          checked={task.isDone}
+                <CheckBox checked={task.isDone}
                           disabled={false}
                           onClick={changeCheckBox}/>
+                <EditableSpan title={task.title} changeTitle={changeTaskTitle}/>
                 <Button disabled={false}
                         btnName={"x"}
+                        btnType={"red"}
                         onClick={deleteTask}/>
             </li>
         )
     })
+
     return (
         <div className='todolist'>
-            <h3>{props.title} <Button onClick={props.deleteTodoList} disabled={false} btnName={"x"}/></h3>
+            <div>
+                <EditableSpan title={props.title} changeTitle={changeTodolistTitle}/>
+                <Button onClick={props.deleteTodoList} disabled={false} btnName={"x"}/>
+            </div>
 
             <div className='header'>
-                <div>
-                    <Input onChange={onTaskNameChanged}
-                           value={newTaskText}
-                           addData={addTask}
-                           error={error ? true : false}/>
-                    <Button onClick={addTask}
-                            btnName={"+"}
-                            btnType={"green"}
-                            disabled={!newTaskText}/>
-                    {error && <div className="error-message">{error}</div>}
-                </div>
+                <AddItemForm addItem={addTaskHandler}/>
+
                 <div>
                     <Button onClick={onAllClickHandler}
                             btnName={"All"}
