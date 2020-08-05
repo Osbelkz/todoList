@@ -1,41 +1,44 @@
-import React, {useState} from "react";
-import {Input} from "../../common/Input/Input";
-import {Button} from "../../common/Button/Button";
+import React, {useState, ChangeEvent} from "react";
+import {Button, Input, TextField, IconButton} from "@material-ui/core";
+import {AddCircle} from "@material-ui/icons";
 
 
 type AddItemFormPropsType = {
-    addItem: (title: string)=>void
+    addItem: (title: string) => void
 }
 
 export function AddItemForm(props: AddItemFormPropsType) {
 
-    let [inputValue, setInputValue] = useState('');
+    let [newTaskText, setTaskText] = useState('');
     let [error, setError] = useState<string | null>(null);
 
-    function onInputValueChangedHandler(value: string): void {
-        setInputValue(value);
+    function onTaskNameChanged(e: ChangeEvent<HTMLInputElement>): void {
+        setTaskText(e.target.value);
         setError(null);
     }
 
     function addItem(): void {
-        if (inputValue.trim()) {
-            props.addItem(inputValue.trim());
-            setInputValue('');
+        if (newTaskText.trim()) {
+            props.addItem(newTaskText.trim());
+            setTaskText('');
         }
         setError('Title is required!');
     }
 
     return (
         <div>
-            <Input onChange={onInputValueChangedHandler}
-                   value={inputValue}
-                   addData={addItem}
-                   error={error ? true : false}/>
-            <Button onClick={addItem}
-                    btnName={"+"}
-                    btnType={"green"}
-                    disabled={!inputValue}/>
-            {error && <div className="error-message">{error}</div>}
+            <TextField onChange={onTaskNameChanged}
+                       value={newTaskText}
+                       onKeyPress={(e) => {if (e.key === "Enter") addItem()}}
+                       variant={"outlined"}
+                       size={"small"}
+                       error={!!error}
+                       helperText={error}
+                       label={"Title"}
+            />
+            <IconButton color={"primary"} onClick={addItem} disabled={!newTaskText}>
+                <AddCircle/>
+            </IconButton>
         </div>
     )
 }
