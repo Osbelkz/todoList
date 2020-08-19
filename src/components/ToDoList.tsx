@@ -79,10 +79,8 @@ export function ToDoList(props: ToDoListProps) {
                     <Delete/>
                 </IconButton>
             </div>
-
             <div className='header'>
                 <AddItemForm addItem={addTaskHandler}/>
-
                 <div>
                     <Button onClick={onAllClickHandler}
                             disabled={props.allTasks.length === 0}
@@ -98,11 +96,9 @@ export function ToDoList(props: ToDoListProps) {
                             variant={props.filter === "completed" ? "contained" : "outlined"}>Completed</Button>
                 </div>
             </div>
-
             <div className="tasksList">
                 {tasks}
             </div>
-
         </div>
     )
 }

@@ -15,7 +15,7 @@ export type TaskType = {
 export type FilterValuesType = "all" | "active" | "completed";
 
 
-type TodoListType = {
+export type TodoListType = {
     title: string
     id: string
     filter: FilterValuesType
