@@ -1,5 +1,5 @@
-import React, {useState, ChangeEvent} from "react";
-import {Button, Input, TextField, IconButton} from "@material-ui/core";
+import React, {useState, ChangeEvent, KeyboardEvent} from "react";
+import {TextField, IconButton} from "@material-ui/core";
 import {AddCircle} from "@material-ui/icons";
 
 
@@ -7,8 +7,7 @@ type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export function AddItemForm(props: AddItemFormPropsType) {
-
+export const AddItemForm  = React.memo( function (props: AddItemFormPropsType) {
     let [newTaskText, setTaskText] = useState('');
     let [error, setError] = useState<string | null>(null);
 
@@ -25,11 +24,16 @@ export function AddItemForm(props: AddItemFormPropsType) {
         setError('Title is required!');
     }
 
+    const onKeyPressHandler =  (e: KeyboardEvent<HTMLDivElement>) => {
+        if (error !== null) setError(null)
+        if (e.key === "Enter") addItem()
+    }
+
     return (
         <div>
             <TextField onChange={onTaskNameChanged}
                        value={newTaskText}
-                       onKeyPress={(e) => {if (e.key === "Enter") addItem()}}
+                       onKeyPress={onKeyPressHandler}
                        variant={"outlined"}
                        size={"small"}
                        error={!!error}
@@ -41,4 +45,4 @@ export function AddItemForm(props: AddItemFormPropsType) {
             </IconButton>
         </div>
     )
-}
+})

@@ -1,6 +1,5 @@
-import {TasksListType, TodoListType} from "../App";
-import {AddTodolistAC, RemoveTodolistAC, todolistsReducer} from "./todolists-reducer";
-import {tasksReducer} from "./tasks-reducer";
+import {AddTodolistAC, RemoveTodolistAC, todolistsReducer, TodoListType} from "./todolists-reducer";
+import {tasksReducer, TasksListType} from "./tasks-reducer";
 
 describe("common tasks and todolist reducer test", ()=>{
     test('new array should be added when new todolist is added', () => {

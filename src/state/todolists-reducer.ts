@@ -1,4 +1,3 @@
-import {FilterValuesType, TodoListType} from "../App";
 import {v1} from "uuid";
 
 export enum TODOLISTS_ACTION_TYPE {
@@ -6,6 +5,13 @@ export enum TODOLISTS_ACTION_TYPE {
     ADD_TODOLIST = "ADD-TODOLIST",
     CHANGE_TODOLIST_TITLE = "CHANGE-TODOLIST-TITLE",
     CHANGE_TODOLIST_FILTER = "CHANGE-TODOLIST-FILTER"
+}
+
+export type FilterValuesType = "all" | "active" | "completed";
+export type TodoListType = {
+    title: string
+    id: string
+    filter: FilterValuesType
 }
 
 export type RemoveTodolistActionType = {
@@ -28,13 +34,14 @@ export type ChangeTodolistFilterActionType = {
     filter: FilterValuesType
 }
 
-type ActionsTypes =
-    RemoveTodolistActionType
+type ActionsTypes = RemoveTodolistActionType
     | AddTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
 
-export const todolistsReducer = (state: Array<TodoListType>, action: ActionsTypes) => {
+const initialState: Array<TodoListType> = []
+
+export const todolistsReducer = (state = initialState, action: ActionsTypes): Array<TodoListType> => {
     switch (action.type) {
         case TODOLISTS_ACTION_TYPE.REMOVE_TODOLIST:
             return state.filter(todolist => todolist.id !== action.id);
@@ -52,7 +59,7 @@ export const todolistsReducer = (state: Array<TodoListType>, action: ActionsType
                 ? {...todolist, filter: action.filter}
                 : todolist);
         default:
-            throw new Error("don't have this type");
+            return state;
     }
 }
 

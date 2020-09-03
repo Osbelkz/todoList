@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import './App.css';
-import {ToDoList} from "./components/ToDoList";
+import '../App.css';
+import {ToDoList} from "../components/ToDoList";
 import {v1} from "uuid";
-import {AddItemForm} from "./components/AddItemForm/AddItemForm";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 import {AppBar, IconButton, Typography, Button, Toolbar, Container, Grid, Paper} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 
@@ -141,18 +141,7 @@ function App() {
                                 <Paper elevation={23} style={{padding: "10px"}}>
                                     <ToDoList
                                         key={tl.id}
-                                        todolistId={tl.id}
-                                        title={tl.title}
-                                        filter={tl.filter}
-                                        tasks={tasksForToDoList}
-                                        deleteTask={deleteTask}
-                                        addTask={addTask}
-                                        changeFilter={changeFilter}
-                                        changeStatus={changeStatus}
-                                        deleteTodoList={() => deleteTodoList(tl.id)}
-                                        allTasks={tasks[tl.id]}
-                                        changeTaskTitle={changeTaskTitle}
-                                        changeTodolistTitle={changeTodolistTitle}
+                                        todolist={tl}
                                     />
                                 </Paper>
                             </Grid>

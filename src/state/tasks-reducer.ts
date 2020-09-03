@@ -1,4 +1,3 @@
-import {TasksListType, TaskType} from "../App"
 import {v1} from "uuid"
 import {AddTodolistActionType, RemoveTodolistActionType, TODOLISTS_ACTION_TYPE} from "./todolists-reducer";
 
@@ -7,6 +6,16 @@ export enum TASKS_ACTION_TYPE {
     REMOVE_TASK ="REMOVE_TASK",
     CHANGE_TASK_STATUS = "CHANGE_TASK_STATUS",
     CHANGE_TASK_TITLE = "CHANGE_TASK_TITLE"
+}
+
+export type TaskType = {
+    id: string,
+    title: string,
+    isDone: boolean,
+}
+
+export type TasksListType = {
+    [key: string]: Array<TaskType>
 }
 
 export type RemoveActionType = {
@@ -40,7 +49,9 @@ type ActionsTypes = RemoveActionType
     | AddTodolistActionType
     | RemoveTodolistActionType
 
-export const tasksReducer = (state: TasksListType, action: ActionsTypes): TasksListType => {
+const initialState:TasksListType = {}
+
+export const tasksReducer = (state = initialState, action: ActionsTypes): TasksListType => {
     switch (action.type) {
         case TASKS_ACTION_TYPE.REMOVE_TASK:
             let newTodolist = [...state[action.todolistId].filter(task => task.id !== action.taskId)]
@@ -64,17 +75,11 @@ export const tasksReducer = (state: TasksListType, action: ActionsTypes): TasksL
                 [action.todolistId]: []
             }
         case TODOLISTS_ACTION_TYPE.REMOVE_TODOLIST:
-            // let newState: TasksListType ={}
-            // for (let key in state) {
-            //     if (key!==action.id) {
-            //         newState[key] = state[key]
-            //     }
-            // }
             let newState = {...state}
             delete newState[action.id]
             return newState
         default:
-            throw new Error("don't have this type");
+            return state;
     }
 }
 
