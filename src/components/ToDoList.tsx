@@ -14,7 +14,7 @@ type ToDoListPropsType = {
 }
 
 export const ToDoList = React.memo((props: ToDoListPropsType) => {
-    console.log("todolist")
+
     const tasksObj = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.todolist.id]);
     const dispatch = useDispatch();
 
