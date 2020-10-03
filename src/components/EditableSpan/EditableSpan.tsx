@@ -2,8 +2,8 @@ import React, {ChangeEvent, useState} from "react";
 import { TextField } from "@material-ui/core";
 
 type EditableSpanPropsType = {
-    title: string
-    changeTitle: (newTitle: string) => void
+    value: string
+    onChange: (newTitle: string) => void
 }
 
 export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
@@ -14,12 +14,12 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
 
     function activateEditMode() {
         setEditMode(true)
-        setTitle(props.title)
+        setTitle(props.value)
     }
 
     function deactivateEditMode() {
         setEditMode(false)
-        props.changeTitle(title)
+        props.onChange(title)
     }
 
     function changeTitleHandler(e: ChangeEvent<HTMLInputElement>) {
@@ -29,5 +29,5 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
 
     return editMode
         ? <TextField value={title} variant={"outlined"} size={"small"} onChange={changeTitleHandler} onBlur={deactivateEditMode} autoFocus/>
-        : <span onDoubleClick={activateEditMode}>{props.title}</span>
+        : <span onDoubleClick={activateEditMode}>{props.value}</span>
 })

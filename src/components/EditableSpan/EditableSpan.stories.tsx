@@ -9,13 +9,6 @@ export default {
 } as Meta;
 
 
-const changeTitleCallback = action("Title changed")
-
-
-export const EditableSpanBaseExapmle = (props: any) => {
-    return (
-        <>
-            <EditableSpan title={"start value"} changeTitle={changeTitleCallback}/>
-        </>
-    )
+export const EditableSpanFormBaseExample = (props: any) => {
+    return (<EditableSpan value={"StartValue"} onChange={action("value changed")} />)
 }

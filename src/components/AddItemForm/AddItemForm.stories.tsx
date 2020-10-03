@@ -7,8 +7,8 @@ export default {
     component: AddItemForm,
 };
 
-const callback = action("Button 'add' was pressed inside the form")
-
-export const AddItemFromBaseExapmle = (props: any) => {
-    return <AddItemForm addItem={callback}/>
+export const AddItemFormBaseExample = (props: any) => {
+    return (<AddItemForm entityStatus={"idle"}
+                         addItem={action('Button inside form clicked')}
+    />)
 }

@@ -1,4 +1,4 @@
-import {AddTodolistAC, RemoveTodolistAC, todolistsReducer, TodoListType} from "./todolists-reducer";
+import {addTodolistAC, removeTodolistAC, todolistsReducer, TodoListType} from "./todolists-reducer";
 import {tasksReducer, TasksListType} from "./tasks-reducer";
 
 describe("common tasks and todolist reducer test", ()=>{
@@ -16,7 +16,7 @@ describe("common tasks and todolist reducer test", ()=>{
             ],
         };
 
-        const action = AddTodolistAC("new todolist");
+        const action = addTodolistAC("new todolist");
 
         const endState = tasksReducer(startState, action)
 
@@ -45,7 +45,7 @@ describe("common tasks and todolist reducer test", ()=>{
             ]
         };
 
-        const action = RemoveTodolistAC("todolistId2");
+        const action = removeTodolistAC("todolistId2");
 
         const endState = tasksReducer(startState, action)
 
@@ -60,7 +60,7 @@ describe("common tasks and todolist reducer test", ()=>{
         const startTasksState: TasksListType = {};
         const startTodolistsState: Array<TodoListType> = [];
 
-        const action = AddTodolistAC("new todolist");
+        const action = addTodolistAC("new todolist");
 
         const endTasksState = tasksReducer(startTasksState, action)
         const endTodolistsState = todolistsReducer(startTodolistsState, action)

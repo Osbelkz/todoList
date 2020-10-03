@@ -1,10 +1,12 @@
 import React, {useState, ChangeEvent, KeyboardEvent} from "react";
 import {TextField, IconButton} from "@material-ui/core";
 import {AddCircle} from "@material-ui/icons";
+import { RequestStatusType } from "../../state/app-reducer";
 
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    entityStatus: RequestStatusType
 }
 
 export const AddItemForm  = React.memo( function (props: AddItemFormPropsType) {
@@ -39,8 +41,9 @@ export const AddItemForm  = React.memo( function (props: AddItemFormPropsType) {
                        error={!!error}
                        helperText={error}
                        label={"Title"}
+                       disabled={props.entityStatus==="loading"}
             />
-            <IconButton color={"primary"} onClick={addItem} disabled={!newTaskText}>
+            <IconButton color={"primary"} onClick={addItem} disabled={!newTaskText && props.entityStatus==="loading"} >
                 <AddCircle/>
             </IconButton>
         </div>
