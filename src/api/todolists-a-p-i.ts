@@ -1,5 +1,68 @@
 import axios from "axios";
 
+const instance = axios.create({
+    baseURL: "https://social-network.samuraijs.com/api/1.1/",
+    withCredentials: true,
+    headers: {
+        "api-key": "2dece0c4-7aed-430e-aeba-9f10430f969a"
+    }
+})
+
+export const todolistsAPI = {
+    getTodolists() {
+        return instance.get<Array<TodolistType>>("todo-lists")
+    },
+    createTodolist(title: string) {
+        return instance.post<CommonResponseType<{ item: TodolistType }>>("todo-lists", {title})
+    },
+    deleteTodolist(todolistId: string) {
+        return instance.delete<CommonResponseType>(`todo-lists/${todolistId}`)
+    },
+    updateTodolist(id: string, title: string) {
+        return instance.put<CommonResponseType>(`todo-lists/${id}`, {title: title});
+    }
+}
+
+export const tasksAPI = {
+    getTasks(todolistId: string) {
+        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
+    },
+    createTask(todolistId: string, title: string) {
+        return instance.post<CommonResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title})
+    },
+    deleteTask(todolistId: string, taskId: string) {
+        return instance.delete<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
+        return instance.put<CommonResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+    }
+}
+
+export const authAPI = {
+    me() {
+        return instance.get<CommonResponseType<AuthMeType>>("auth/me")
+    },
+    login(data: LoginParamsType) {
+        return instance.post<CommonResponseType<{userId: number}>>("auth/login", data)
+    },
+    logout() {
+        return instance.delete<CommonResponseType>("auth/login")
+    }
+
+}
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
+}
+
+export type AuthMeType = {
+    id: number
+    email: string
+    login: string
+}
 
 export type TodolistType = {
     id: string
@@ -60,43 +123,4 @@ type GetTasksResponse = {
     error: string | null
     totalCount: number
     items: TaskType[]
-}
-
-
-const instance = axios.create({
-    baseURL: "https://social-network.samuraijs.com/api/1.1/",
-    withCredentials: true,
-    headers: {
-        "api-key": "2dece0c4-7aed-430e-aeba-9f10430f969a"
-    }
-})
-
-export const todolistsAPI = {
-    getTodolists() {
-        return instance.get<Array<TodolistType>>("todo-lists")
-    },
-    createTodolist(title: string) {
-        return instance.post<CommonResponseType<{ item: TodolistType }>>("todo-lists", {title})
-    },
-    deleteTodolist(todolistId: string) {
-        return instance.delete<CommonResponseType>(`todo-lists/${todolistId}`)
-    },
-    updateTodolist(id: string, title: string) {
-        return instance.put<CommonResponseType>(`todo-lists/${id}`, {title: title});
-    }
-}
-
-export const tasksAPI = {
-    getTasks(todolistId: string) {
-        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
-    },
-    createTask(todolistId: string, title: string) {
-        return instance.post<CommonResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title})
-    },
-    deleteTask(todolistId: string, taskId: string) {
-        return instance.delete<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
-    },
-    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<CommonResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
-    }
 }

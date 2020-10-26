@@ -1,9 +1,11 @@
 import React, {ChangeEvent, useState} from "react";
 import { TextField } from "@material-ui/core";
+import {RequestStatusType} from "../../state/app-reducer";
 
 type EditableSpanPropsType = {
     value: string
     onChange: (newTitle: string) => void
+    entityStatus: RequestStatusType
 }
 
 export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
@@ -13,8 +15,10 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
 
 
     function activateEditMode() {
-        setEditMode(true)
-        setTitle(props.value)
+        if (!(props.entityStatus==="loading")) {
+            setEditMode(true)
+            setTitle(props.value)
+        }
     }
 
     function deactivateEditMode() {

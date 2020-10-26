@@ -1,17 +1,39 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
-import {AppBar, IconButton, Typography, Button, Toolbar, Container, LinearProgress} from '@material-ui/core';
+import {AppBar, IconButton, Typography, Button, Toolbar, Container, LinearProgress, CircularProgress} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {RequestStatusType} from './state/app-reducer';
 import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar';
 import {TodolistsList} from './components/TodolistsList';
+import {Route, Switch} from 'react-router-dom';
+import {Login} from "./features/Login/Login";
+import {logoutTC, authMeTC} from "./state/auth-reducer";
 
 
 function App() {
 
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const initApp = useSelector<AppRootStateType, boolean>(state => state.app.init)
+
+
+    const dispatch = useDispatch()
+
+    const logoutHandler = () => {
+        dispatch(logoutTC())
+    }
+
+    useEffect(() => {
+        dispatch(authMeTC())
+    })
+
+    if (!initApp) {
+        return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
 
     return (
         <div className="App">
@@ -23,12 +45,17 @@ function App() {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
                 </Toolbar>
             </AppBar>
             {status === "loading" && <LinearProgress color="secondary"/>}
             <Container fixed>
-                <TodolistsList/>
+
+                <Switch>
+                    <Route exact path={"/"} component={TodolistsList}/>
+                    <Route path={"/login"} component={Login}/>
+                </Switch>
+
             </Container>
             <ErrorSnackbar/>
         </div>

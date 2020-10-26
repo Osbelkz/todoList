@@ -7,16 +7,20 @@ import { TasksStateType, removeTaskTC, addTaskTC, updateTaskTC } from '../state/
 import { TaskStatuses } from '../api/todolists-a-p-i'
 import { AddItemForm } from './AddItemForm/AddItemForm'
 import { Todolist } from './Todolist'
+import {Redirect} from "react-router-dom";
 
 export const TodolistsList: React.FC = () => {
 
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const thunk = fetchTodolistsTC()
-        dispatch(thunk)
+        if (isLoggedIn) {
+            dispatch(fetchTodolistsTC())
+        }
+
     }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
@@ -40,7 +44,7 @@ export const TodolistsList: React.FC = () => {
     }, [])
 
     const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAC(todolistId, value)
+        const action = changeTodolistFilterAC({todolistId, newFilter: value})
         dispatch(action)
     }, [])
 
@@ -59,7 +63,9 @@ export const TodolistsList: React.FC = () => {
         dispatch(thunk)
     }, [dispatch])
 
-
+    if (!isLoggedIn) {
+        return <Redirect to={'/login'}/>
+    }
     return <>
         <Grid container style={{padding: '20px'}}>
             <AddItemForm entityStatus={"idle"} addItem={addTodolist}/>

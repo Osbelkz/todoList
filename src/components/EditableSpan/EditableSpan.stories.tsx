@@ -10,5 +10,5 @@ export default {
 
 
 export const EditableSpanFormBaseExample = (props: any) => {
-    return (<EditableSpan value={"StartValue"} onChange={action("value changed")} />)
+    return (<EditableSpan value={"StartValue"} onChange={action("value changed")} entityStatus={"idle"}/>)
 }
