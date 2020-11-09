@@ -4,12 +4,12 @@ import {AppBar, IconButton, Typography, Button, Toolbar, Container, LinearProgre
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {RequestStatusType} from './state/app-reducer';
+import {RequestStatusType, authMeTC} from './state/app-reducer';
 import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar';
 import {TodolistsList} from './components/TodolistsList';
 import {Route, Switch} from 'react-router-dom';
 import {Login} from "./features/Login/Login";
-import {logoutTC, authMeTC} from "./state/auth-reducer";
+import {logoutTC} from "./state/auth-reducer";
 
 
 function App() {
