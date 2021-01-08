@@ -1,7 +1,7 @@
-import {tasksReducer, TasksStateType, removeTaskTC, addTaskTC, updateTaskTC} from './tasks-reducer';
+import {tasksReducer, TasksStateType, removeTask, addTask, updateTask} from './tasks-reducer';
 import {v1} from "uuid";
-import {TaskPriorities, TaskStatuses} from "../api/todolists-a-p-i";
-import {addTodolistsTC} from "./todolists-reducer";
+import {TaskPriorities, TaskStatuses} from "../../api/todolists-a-p-i";
+import {addTodolists} from "./todolists-actions";
 
 describe("tasks reducer test", () => {
 
@@ -108,7 +108,7 @@ describe("tasks reducer test", () => {
             order: 0,
             addedDate: ""
         };
-        const action = addTodolistsTC.fulfilled({todolist}, "requestId", {title: todolist.title})
+        const action = addTodolists.fulfilled({todolist}, "requestId", {title: todolist.title})
 
         const endState = tasksReducer(startState, action)
 

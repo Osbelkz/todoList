@@ -11,7 +11,7 @@ const initialState = {
     init: false
 }
 
-export const authMeTC = createAsyncThunk("app/initApp", async (param, {dispatch}) => {
+const authMeTC = createAsyncThunk("app/initApp", async (param, {dispatch}) => {
     const res = await authAPI.me()
     if (res.data.resultCode === 0) {
         dispatch(setIsLoggedInAC({value: true}))
@@ -20,6 +20,11 @@ export const authMeTC = createAsyncThunk("app/initApp", async (param, {dispatch}
     }
     dispatch(setAppStatusAC({status: 'failed'}))
 })
+
+export const asyncActions = {
+    authMeTC
+}
+
 
 const slice = createSlice({
     name: "app",

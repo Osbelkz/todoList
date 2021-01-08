@@ -1,11 +1,13 @@
 import {authAPI, FieldErrorType, LoginParamsType} from "../../api/todolists-a-p-i";
-import { setAppStatusAC} from "../../state/app-reducer";
+import { setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 
-export const loginTC = createAsyncThunk<undefined, LoginParamsType, { rejectValue: { errors: string[], fieldsErrors?: FieldErrorType[] } }>
-("auth/login",
+export const loginTC = createAsyncThunk<
+    undefined, LoginParamsType,
+    { rejectValue: { errors: string[], fieldsErrors?: FieldErrorType[] } }
+    >("auth/login",
     async (params, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
 
@@ -26,6 +28,7 @@ export const loginTC = createAsyncThunk<undefined, LoginParamsType, { rejectValu
         }
     })
 
+
 export const logoutTC = createAsyncThunk("auth/logout",
     async (params, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
@@ -43,8 +46,9 @@ export const logoutTC = createAsyncThunk("auth/logout",
             return thunkAPI.rejectWithValue({})
         }
     })
+export const asyncActions = {loginTC, logoutTC}
 
-const slice = createSlice({
+export const slice = createSlice({
     name: "auth",
     initialState: {
         isLoggedIn: false

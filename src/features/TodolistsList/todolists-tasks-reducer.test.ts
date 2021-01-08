@@ -1,7 +1,8 @@
-import {addTodolistsTC, removeTodolistsTC, TodolistDomainType, todolistsReducer} from "./todolists-reducer";
+import {TodolistDomainType, todolistsReducer} from "./todolists-reducer";
 import {tasksReducer, TasksStateType} from "./tasks-reducer";
 import {v1} from "uuid";
-import {TaskPriorities, TaskStatuses} from "../api/todolists-a-p-i";
+import {TaskPriorities, TaskStatuses} from "../../api/todolists-a-p-i";
+import {addTodolists, removeTodolists} from "./todolists-actions";
 
 describe("common tasks and todolist reducer test", ()=>{
 
@@ -56,7 +57,7 @@ describe("common tasks and todolist reducer test", ()=>{
             order: 0
         };
 
-        const action = addTodolistsTC.fulfilled({todolist: newTodolist}, "reqiestId", {title: newTodolist.title});
+        const action = addTodolists.fulfilled({todolist: newTodolist}, "reqiestId", {title: newTodolist.title});
 
         const endState = tasksReducer(tasksState, action)
 
@@ -74,7 +75,7 @@ describe("common tasks and todolist reducer test", ()=>{
     test('property with todolistId should be deleted', () => {
 
 
-        const action = removeTodolistsTC.fulfilled({todolistId: todolistId2}, "requestId", {todolistId: todolistId2});
+        const action = removeTodolists.fulfilled({todolistId: todolistId2}, "requestId", {todolistId: todolistId2});
 
         const endState = tasksReducer(tasksState, action)
 
@@ -95,7 +96,7 @@ describe("common tasks and todolist reducer test", ()=>{
             entityStatus: "idle",
             order: 0
         };
-        const action = addTodolistsTC.fulfilled({todolist: newTodolist}, "reqiestId", {title: newTodolist.title});
+        const action = addTodolists.fulfilled({todolist: newTodolist}, "reqiestId", {title: newTodolist.title});
 
         const endTasksState = tasksReducer(tasksState, action)
         const endTodolistsState = todolistsReducer(todolistsState, action)
