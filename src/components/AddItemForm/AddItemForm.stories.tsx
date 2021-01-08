@@ -7,8 +7,12 @@ export default {
     component: AddItemForm,
 };
 
+const asyncCallback = async (...params: any[]) => {
+    action('Button inside form clicked')
+}
+
 export const AddItemFormBaseExample = (props: any) => {
     return (<AddItemForm entityStatus={"idle"}
-                         addItem={action('Button inside form clicked')}
+                         addItem={asyncCallback}
     />)
 }

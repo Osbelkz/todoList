@@ -1,15 +1,20 @@
 import React, {useState, ChangeEvent, KeyboardEvent} from "react";
 import {TextField, IconButton} from "@material-ui/core";
 import {AddCircle} from "@material-ui/icons";
-import { RequestStatusType } from "../../state/app-reducer";
+import {RequestStatusType} from "../../app/app-reducer";
 
+
+export type AddItemFormSubmitHelperType = {
+    setError: (error: string) => void,
+    setTaskText: (title: string) => void
+}
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => void
+    addItem: (params: { title: string }, helper: AddItemFormSubmitHelperType) => void
     entityStatus: RequestStatusType
 }
 
-export const AddItemForm  = React.memo( function (props: AddItemFormPropsType) {
+export const AddItemForm = React.memo(function (props: AddItemFormPropsType) {
     let [newTaskText, setTaskText] = useState('');
     let [error, setError] = useState<string | null>(null);
 
@@ -18,15 +23,15 @@ export const AddItemForm  = React.memo( function (props: AddItemFormPropsType) {
         setError(null);
     }
 
-    function addItem(): void {
+    const addItem = async () => {
         if (newTaskText.trim()) {
-            props.addItem(newTaskText.trim());
-            setTaskText('');
+            props.addItem({title: newTaskText.trim()}, {setError, setTaskText});
+        } else {
+            setError('Title is required!');
         }
-        setError('Title is required!');
     }
 
-    const onKeyPressHandler =  (e: KeyboardEvent<HTMLDivElement>) => {
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => {
         if (error !== null) setError(null)
         if (e.key === "Enter") addItem()
     }
@@ -41,9 +46,13 @@ export const AddItemForm  = React.memo( function (props: AddItemFormPropsType) {
                        error={!!error}
                        helperText={error}
                        label={"Title"}
-                       disabled={props.entityStatus==="loading"}
+                       disabled={props.entityStatus === "loading"}
             />
-            <IconButton color={"primary"} onClick={addItem} disabled={!newTaskText && props.entityStatus==="loading"} >
+            <IconButton color={"primary"}
+                        onClick={addItem}
+                        disabled={!newTaskText && props.entityStatus === "loading"}
+                        style={{marginLeft: "5px"}}
+            >
                 <AddCircle/>
             </IconButton>
         </div>

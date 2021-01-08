@@ -1,6 +1,6 @@
-import {authAPI, FieldErrorType, LoginParamsType} from "../api/todolists-a-p-i";
-import { setAppStatusAC} from "./app-reducer";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {authAPI, FieldErrorType, LoginParamsType} from "../../api/todolists-a-p-i";
+import { setAppStatusAC} from "../../state/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 

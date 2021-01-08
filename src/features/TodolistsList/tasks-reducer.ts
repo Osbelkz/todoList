@@ -1,8 +1,8 @@
 import {addTodolistsTC, fetchTodolistsTC, removeTodolistsTC} from "./todolists-reducer";
-import {RequestStatusType, setAppErrorAC, setAppStatusAC,} from "./app-reducer";
+import {RequestStatusType, setAppErrorAC, setAppStatusAC,} from "../app/app-reducer";
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskModelType} from "../api/todolists-a-p-i";
 import {handleServerAppError} from "../utils/error-utils";
-import {AppRootStateType} from "./store";
+import {AppRootStateType} from "../app/store";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState: TasksStateType = {}

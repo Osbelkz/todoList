@@ -1,13 +1,13 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import {combineReducers, createStore} from 'redux'
-import { tasksReducer } from '../state/tasks-reducer';
-import {appReducer} from "../state/app-reducer";
-import {AppRootStateType} from "../state/store";
+import { tasksReducer } from '../features/TodolistsList/tasks-reducer';
+import {appReducer} from "../app/app-reducer";
+import {AppRootStateType} from "../app/store";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-a-p-i";
-import {todolistsReducer} from "../state/todolists-reducer";
+import {todolistsReducer} from "../features/TodolistsList/todolists-reducer";
 import {v1} from "uuid";
-import {authReducer} from "../state/auth-reducer";
+import {authReducer} from "../features/Auth/auth-reducer";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,

@@ -1,32 +1,41 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {AppBar, IconButton, Typography, Button, Toolbar, Container, LinearProgress, CircularProgress} from '@material-ui/core';
+import {
+    AppBar,
+    IconButton,
+    Typography,
+    Button,
+    Toolbar,
+    Container,
+    LinearProgress,
+    CircularProgress
+} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
-import {RequestStatusType, authMeTC} from './state/app-reducer';
-import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar';
-import {TodolistsList} from './components/TodolistsList';
+import {asyncActions} from './app-reducer';
+import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
+import {TodolistsList} from '../features/TodolistsList';
 import {Route, Switch} from 'react-router-dom';
-import {Login} from "./features/Login/Login";
-import {logoutTC} from "./state/auth-reducer";
+import {Login} from "../features/Auth";
+import {logoutTC} from "../features/Auth/auth-reducer";
+import {selectInitApp, selectStatus} from './selectors';
+import {authSelectors} from "../features/Auth";
 
 
 function App() {
 
-    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-    const initApp = useSelector<AppRootStateType, boolean>(state => state.app.init)
-
-
     const dispatch = useDispatch()
+
+    const status = useSelector(selectStatus)
+    const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
+    const initApp = useSelector(selectInitApp)
 
     const logoutHandler = () => {
         dispatch(logoutTC())
     }
 
     useEffect(() => {
-        dispatch(authMeTC())
+        dispatch(asyncActions.authMeTC())
     })
 
     if (!initApp) {

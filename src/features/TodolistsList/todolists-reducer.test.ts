@@ -9,7 +9,7 @@ import {
     addTodolistsTC, changeTodolistTitleTC
 } from './todolists-reducer';
 import {v1} from 'uuid';
-import {RequestStatusType} from "./app-reducer";
+import {RequestStatusType} from "../app/app-reducer";
 
 describe("todolist reducer test", () => {
 
