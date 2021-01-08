@@ -1,57 +1,26 @@
-/*.App {*/
-/*  padding: 30px;*/
-/*  display: flex;*/
-/*  flex-wrap: wrap;*/
-/*}*/
+/*
+.Application {
+  padding: 30px;
+  display: flex;
+}
 
-/*.App > div {*/
-/*  margin-right: 50px;*/
-/*}*/
+.Application > div {
+  margin-right: 50px;
+}
 
-/*.error {*/
-/*  border: red 1px solid;*/
-/*}*/
+.error {
+  border: red 1px solid;
+}
 
-/*.error-message {*/
-/*  color: red;*/
-/*}*/
+.error-message {
+  color: red;
+}
 
+.active-filter {
+  background-color: aquamarine;
+}
 
-/*.active-filter {*/
-/*  background-color: blue;*/
-/*  color: wheat;*/
-/*}*/
-
-/*.isDone {*/
-/*  opacity: .5;*/
-/*}*/
-
-/*.tasksList {*/
-/*  padding: 0;*/
-/*  margin: 0;*/
-/*  list-style: none;*/
-/*}*/
-
-/*.task-default {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*  justify-content: space-between;*/
-/*}*/
-
-/*.task-default:hover {*/
-/*   background-color: #adb8c0;*/
-/* }*/
-
-/*.task {*/
-/*  display: flex;*/
-/*  align-content: center;*/
-/*}*/
-
-/*.header {*/
-/*  display: flex;*/
-/*  justify-content: space-between;*/
-/*}*/
-
-/*.todolist {*/
-/*  width: 420px;*/
-/*}*/
+.is-done {
+  opacity: 0.5;
+}
+*/

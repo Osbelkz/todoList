@@ -1,74 +1,71 @@
-import React, {useEffect} from 'react';
-import './App.css';
+import React, {useCallback, useEffect} from 'react'
+import './App.css'
 import {
     AppBar,
-    IconButton,
-    Typography,
     Button,
-    Toolbar,
+    CircularProgress,
     Container,
+    IconButton,
     LinearProgress,
-    CircularProgress
-} from '@material-ui/core';
-import {Menu} from '@material-ui/icons';
-import {useDispatch, useSelector} from "react-redux";
-import {asyncActions} from './app-reducer';
-import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
-import {TodolistsList} from '../features/TodolistsList';
-import {Route, Switch} from 'react-router-dom';
-import {Login} from "../features/Auth";
-import {logoutTC} from "../features/Auth/auth-reducer";
-import {selectInitApp, selectStatus} from './selectors';
-import {authSelectors} from "../features/Auth";
+    Toolbar,
+    Typography
+} from '@material-ui/core'
+import {Menu} from '@material-ui/icons'
+import {TodolistsList} from '../features/TodolistsList'
+import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
+import {useDispatch, useSelector} from 'react-redux'
+import {appActions} from '../features/Application'
+import {Route} from 'react-router-dom'
+import {authActions, Login} from '../features/Auth'
+import {selectIsInitialized, selectStatus} from '../features/Application/selectors'
+import {authSelectors} from '../features/Auth'
+import {useActions} from '../utils/redux-utils'
 
+type PropsType = {}
 
-function App() {
-
-    const dispatch = useDispatch()
-
+function App(props: PropsType) {
     const status = useSelector(selectStatus)
+    const isInitialized = useSelector(selectIsInitialized)
     const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
-    const initApp = useSelector(selectInitApp)
 
-    const logoutHandler = () => {
-        dispatch(logoutTC())
-    }
-
+    const {logout} = useActions(authActions)
+    const {initializeApp} = useActions(appActions)
     useEffect(() => {
-        dispatch(asyncActions.authMeTC())
-    })
+        if (!isInitialized) {
+            initializeApp()
+        }
+    }, []);
 
-    if (!initApp) {
-        return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+    const logoutHandler = useCallback(() => {
+        logout()
+    }, [])
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
             <CircularProgress/>
         </div>
     }
-
     return (
-        <div className="App">
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        News
-                    </Typography>
-                    {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
-                </Toolbar>
-            </AppBar>
-            {status === "loading" && <LinearProgress color="secondary"/>}
-            <Container fixed>
-
-                <Switch>
-                    <Route exact path={"/"} component={TodolistsList}/>
-                    <Route path={"/login"} component={Login}/>
-                </Switch>
-
-            </Container>
-            <ErrorSnackbar/>
-        </div>
+            <div className="App">
+                <ErrorSnackbar/>
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton edge="start" color="inherit" aria-label="menu">
+                            <Menu/>
+                        </IconButton>
+                        <Typography variant="h6">
+                            News
+                        </Typography>
+                        {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
+                    </Toolbar>
+                    {status === 'loading' && <LinearProgress/>}
+                </AppBar>
+                <Container fixed>
+                    <Route exact path={'/'} render={() => <TodolistsList demo={false}/>}/>
+                    <Route path={'/login'} render={() => <Login/>}/>
+                </Container>
+            </div>
     )
 }
 
-export default App;
+export default App

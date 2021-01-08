@@ -1,60 +1,50 @@
-import React, {useState, ChangeEvent, KeyboardEvent} from "react";
-import {TextField, IconButton} from "@material-ui/core";
-import {AddCircle} from "@material-ui/icons";
-import {RequestStatusType} from "../../app/app-reducer";
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
+import {IconButton, TextField} from '@material-ui/core'
+import {AddBox} from '@material-ui/icons'
 
-
-export type AddItemFormSubmitHelperType = {
-    setError: (error: string) => void,
-    setTaskText: (title: string) => void
-}
-
+export type AddItemFormSubmitHelperType = { setError: (error: string) => void, setTitle: (title: string) => void}
 type AddItemFormPropsType = {
-    addItem: (params: { title: string }, helper: AddItemFormSubmitHelperType) => void
-    entityStatus: RequestStatusType
+    addItem: (title: string, helper: AddItemFormSubmitHelperType) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo(function (props: AddItemFormPropsType) {
-    let [newTaskText, setTaskText] = useState('');
-    let [error, setError] = useState<string | null>(null);
+export const AddItemForm = React.memo(function ({addItem, disabled = false}: AddItemFormPropsType) {
+    let [title, setTitle] = useState('')
+    let [error, setError] = useState<string | null>(null)
 
-    function onTaskNameChanged(e: ChangeEvent<HTMLInputElement>): void {
-        setTaskText(e.target.value);
-        setError(null);
-    }
-
-    const addItem = async () => {
-        if (newTaskText.trim()) {
-            props.addItem({title: newTaskText.trim()}, {setError, setTaskText});
+    const addItemHandler = async () => {
+        if (title.trim() !== '') {
+                addItem(title, {setError, setTitle})
         } else {
-            setError('Title is required!');
+            setError('Title is required')
         }
     }
 
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-        if (error !== null) setError(null)
-        if (e.key === "Enter") addItem()
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
     }
 
-    return (
-        <div>
-            <TextField onChange={onTaskNameChanged}
-                       value={newTaskText}
-                       onKeyPress={onKeyPressHandler}
-                       variant={"outlined"}
-                       size={"small"}
-                       error={!!error}
-                       helperText={error}
-                       label={"Title"}
-                       disabled={props.entityStatus === "loading"}
-            />
-            <IconButton color={"primary"}
-                        onClick={addItem}
-                        disabled={!newTaskText && props.entityStatus === "loading"}
-                        style={{marginLeft: "5px"}}
-            >
-                <AddCircle/>
-            </IconButton>
-        </div>
-    )
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
+            setError(null)
+        }
+        if (e.charCode === 13) {
+            addItemHandler()
+        }
+    }
+
+    return <div>
+        <TextField variant="outlined"
+                   disabled={disabled}
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItemHandler} disabled={disabled} style={{marginLeft: '5px'}}>
+            <AddBox/>
+        </IconButton>
+    </div>
 })

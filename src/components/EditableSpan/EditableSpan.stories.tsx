@@ -1,14 +1,12 @@
-import React from 'react';
-import {action} from '@storybook/addon-actions';
-import {EditableSpan} from "./EditableSpan";
-import {Meta} from "@storybook/react";
+import React from 'react'
+import {action} from '@storybook/addon-actions'
+import {EditableSpan} from './EditableSpan'
 
 export default {
-    title: 'Todolist/EditableSpan',
-    component: EditableSpan,
-} as Meta;
-
+    title: 'EditableSpan Stories',
+    component: EditableSpan
+}
 
 export const EditableSpanFormBaseExample = (props: any) => {
-    return (<EditableSpan value={"StartValue"} onChange={action("value changed")} entityStatus={"idle"}/>)
+    return (<EditableSpan value={"StartValue"} onChange={action("value changed")} />)
 }
